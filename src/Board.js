@@ -131,13 +131,42 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+    // assuming that there are negative major diagonals *************************** check
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var diag = majorDiagonalColumnIndexAtFirstRow;
+      var board = this.rows();
+      var numRows = this.rows().length;
+      var count = 0;
+      if(diag <= 0) {
+        for(var i = 0; i < numRows; i++) {
+          if( (diag + i) >= 0) {
+            count += board[i][diag + i];
+          }
+        }
+        return count > 1;
+      } else {
+        for(var i = 0; i < numRows - diag; i++) {
+          count += board[i][diag + i];
+        }
+        return count > 1;
+      }
+      // have to check diagonals starging at -(n-1) 
+      //  and increment row and col by one for each iteration
+
+      //for each diagonal will iterate at most n time
+      //  check to see if indices greater than n exit the loop
+      // n <= 0 iterate n times
+      // else iterate n - index times
+
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var numRowsCols = this.rows().length;
+      for(var i = -(numRowsCols-1); i < numRowsCols; i++) {
+        if(this.hasMajorDiagonalConflictAt(i)) return true;
+      }
+      return false;
     },
 
 
