@@ -15,11 +15,14 @@
 
 
 window.copySliceBoard = function(array) {
-  var result = [];
-  for(var i = 0; i < array.length; i++) {
-    result.push( array[i].slice(0));
-  }
-  return result;
+  // var result = [];
+  // for(var i = 0; i < array.length; i++) {
+  //   result.push( array[i].slice(0));
+  // }
+  // return result;
+  var board = JSON.stringify(array);
+  var newboard = JSON.parse(board);
+  return newboard;
 };
 
 
