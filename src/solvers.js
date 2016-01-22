@@ -247,3 +247,5 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount.length);
   return solutionCount.length;
 };
+
+
