@@ -15,14 +15,14 @@
 
 
 window.copySliceBoard = function(array) {
-  // var result = [];
-  // for(var i = 0; i < array.length; i++) {
-  //   result.push( array[i].slice(0));
-  // }
-  // return result;
-  var board = JSON.stringify(array);
-  var newboard = JSON.parse(board);
-  return newboard;
+  var result = [];
+  for(var i = 0; i < array.length; i++) {
+    result.push( array[i].slice(0));
+  }
+  return result;
+  // var board = JSON.stringify(array);
+  // var newboard = JSON.parse(board);
+  // return newboard;
 };
 
 
@@ -37,6 +37,85 @@ window.findNRooksSolution = function(num) {
 
   return board.rows();
 };
+
+// window.findAllRooksSolution = function(num) {
+//   // var board = new Board({n:num});
+//   var results = [];
+
+//   var recurse = function(rows, currentBoard) {
+//     currentBoard = currentBoard || new Board({n:num});
+//     rows = rows || 0;
+
+//     if(rows === num) {
+//       results.push(currentBoard);
+    
+//     } else {
+
+//       for(var col = 0; col < num; col++) {
+//         currentBoard.togglePiece(rows, col);
+
+//         //if no colisions
+//         if( !currentBoard.hasAnyRooksConflicts() ) {
+//           // recurse to next row using current board
+//           var nextBoard = new Board(copySliceBoard(currentBoard.rows()));
+//           recurse(rows + 1, nextBoard);
+//         }
+
+//         currentBoard.togglePiece(rows, col);
+
+//       }
+
+//     }
+
+//   };
+
+//   recurse();
+
+//   return  results;
+// };
+// window.findAllRooksSolution = function(num) {
+//   // var board = new Board({n:num});
+//   var results = [];
+
+//   var recurse = function(rows, currentBoard, colLeft) {
+//     currentBoard = currentBoard || new Board({n:num});
+//     rows = rows || 0;
+//     if(colLeft === undefined) {
+//       colLeft = {};
+//       for( var x = 0; x < num; x++) { 
+//         colLeft[x] =x;
+//       }
+//     }
+
+//     if(rows === num) {
+//       results.push(currentBoard);
+    
+//     } else {
+
+//       for(var col = 0; col < num; col++) {
+//         if( col in colLeft ){
+
+//           currentBoard.togglePiece(rows, col);
+
+//           //if no colisions
+//           if( !currentBoard.hasAnyRooksConflicts() ) {
+//             // recurse to next row using current board
+//             var nextBoard = new Board(copySliceBoard(currentBoard.rows()));
+//             recurse(rows + 1, nextBoard);
+//           }
+
+//           delete colLeft[col];
+          
+//           currentBoard.togglePiece(rows, col, colLeft);
+//         } 
+//       }
+//     }
+//   };
+
+//   recurse();
+
+//   return  results;
+// };
 
 window.findAllRooksSolution = function(num) {
   // var board = new Board({n:num});
@@ -62,11 +141,8 @@ window.findAllRooksSolution = function(num) {
         }
 
         currentBoard.togglePiece(rows, col);
-
       }
-
     }
-
   };
 
   recurse();
@@ -75,13 +151,42 @@ window.findAllRooksSolution = function(num) {
 };
 
 
-// return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
+// // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
+
 window.countNRooksSolutions = function(num) {
-  var solutionCount = findAllRooksSolution(num).length;
+  var solutionCount = 0;
+  var board = new Board({n:num});
+
+  var findSolution = function(row) {
+
+    if(row === num) {
+      solutionCount++;
+      return;
+     } //else {
+      for(var col = 0; col < num; col++) {
+        board.togglePiece(row, col);
+        
+        if(!board.hasAnyRooksConflicts()) {
+          findSolution(row + 1);
+        }
+
+        board.togglePiece(row, col);
+      }
+    //}
+  };
+
+  findSolution(0);
+
+
   console.log('Number of solutions for ' + num + ' rooks:', solutionCount);
   return solutionCount;
 };
 
+// window.countNRooksSolutions = function(num) {
+//   var solutionCount = findAllRooksSolution(num).length;
+//   console.log('Number of solutions for ' + num + ' rooks:', solutionCount);
+//   return solutionCount;
+//  };
 
 window.findAllQueensSolution = function(num) {
   var results = [];
